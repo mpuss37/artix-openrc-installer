@@ -30,7 +30,8 @@ boot|save-termencoding
 boot|seedrng
 boot|swap
 boot|sysctl
-# SKIP(broken): boot/syslog-ng
+# OPTIONAL (paket tidak terinstall di sistem asal — aktifkan jika dipakai):
+# boot|syslog-ng
 boot|termencoding
 boot|tlp
 boot|zramen
@@ -44,7 +45,8 @@ default|agetty.tty6
 default|battery-threshold
 default|brightness-enable
 default|dbus
-# SKIP(broken): default/dnsmasq
+# OPTIONAL (paket tidak terinstall di sistem asal — aktifkan jika dipakai):
+# default|dnsmasq
 default|docker
 default|elogind
 default|fail2ban
@@ -53,4 +55,4 @@ default|local
 default|netmount
 default|ntpd
 default|tlp
-# SKIP(broken): default/transmission
+# default|transmission
