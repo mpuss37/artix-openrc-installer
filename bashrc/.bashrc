@@ -4,7 +4,7 @@
 #VBoxManage startvm "jeneng-virtual-e" --type headless
 #folder /tmp iku penting gae simpenan package seng bedo versi
 #gae ngae hostpot
-#nmcli device wifi hotspot ssid "HERDI-IAN-SKUY" password "12345678" 
+#nmcli device wifi hotspot ssid "SSID" password "PASSWORD"
 
 alias c='clear';
 alias x='exit';
@@ -31,7 +31,8 @@ alias upower-btt='upower  -i /org/freedesktop/UPower/devices/headset_dev_41_42_A
 alias rm='rm -I --preserve-root'
 alias windos='wine explorer /desktop=MyWineDesktop,1366x768'
 alias btl='blueman-manager'
-alias bt='bluetoothctl'
+alias bt='sudo rc-service /etc/init.d/bluetoothd start && bluetoothctl'
+alias bt-stop='bluetoothctl disconnect && sudo rc-service bluetoothd stop'
 alias ta='task'
 alias nmcli-pass='nmcli dev wifi show-password'
 #alias pactl-hdmi='pactl set-card-profile 0 output:hdmi-stereo'
@@ -49,6 +50,8 @@ alias mysql-sam='/opt/lampp/bin/./mysql -u root'
 alias xrandr-umum='xrandr --output HDMI1 --auto --right-of eDP1'
 alias pactl-list='pactl list short sinks'
 alias pactl-def='pactl set-default-sink $1';
+alias modprobe-usb-idup='sudo modprobe usb-storage && sudo modprobe uas'
+alias modprobe-usb-mati='sudo rmmod uas && sudo rmmod usb_storage'
 
 #bagian export
 #LS_COLORS=$LS_COLORS:'di=0;31:ex=0;33:' ; export LS_COLORS
@@ -71,7 +74,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 #export untuk mimo agentic ai
-export MIMO_API_KEY="sk-svq11yqz8z40szzbdszej81h6j81n5di1m3skvwe2ektif3u"
+#export MIMO_API_KEY="your-api-key-here"
 
 
 #custom
@@ -91,3 +94,9 @@ pacman-s() {
 }
 
 alias rasan='java -jar /home/mpuss/Downloads/file-github/rasan/build/libs/kuncen-1.0-SNAPSHOT.jar' 
+
+# Created by `pipx` on 2026-07-22 12:25:23
+export PATH="$PATH:/home/mpuss/.local/bin"
+
+#bash-completion openrc (rc-service, rc-status, rc-update)
+for f in /usr/share/bash-completion/completions/rc-*; do source "$f"; done
