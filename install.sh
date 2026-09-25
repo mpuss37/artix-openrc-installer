@@ -56,11 +56,16 @@ echo "╚═══════════════════════�
 echo ""
 
 # =========================================================
-# 1. SYNC KEYRING & MIRROR
+# 1. SYNC KEYRING & MIRROR (skip kalau sudah sync manual)
 # =========================================================
-log "=== Sync pacman keyring ==="
-run sudo pacman -Sy --noconfirm archlinux-keyring artix-keyring
-run sudo pacman -Sy --noconfirm
+if [ ! -f /tmp/.pacman-synced ]; then
+    log "=== Sync pacman keyring ==="
+    run sudo pacman -Sy --noconfirm archlinux-keyring artix-keyring
+    run sudo pacman -Sy --noconfirm
+    touch /tmp/.pacman-synced
+else
+    log "=== Skip sync (sudah dilakukan manual) ==="
+fi
 
 # =========================================================
 # 2. INSTALL NATIVE PACKAGES
@@ -77,7 +82,8 @@ if [ "$NO_PACKAGES" -eq 0 ] && [ -f "$PKG_DIR/native.txt" ]; then
     log "  $COUNT native packages to install"
 
     if [ "$DRY_RUN" -eq 0 ]; then
-        echo "$NATIVE_PKGS" | sudo pacman -S --needed --noconfirm -
+        echo "$NATIVE_PKGS" > /tmp/native-pkgs.txt
+        xargs -d '\n' sudo pacman -S --needed --noconfirm < /tmp/native-pkgs.txt
     else
         log "DRY-RUN: Would install $COUNT native packages"
     fi
@@ -115,7 +121,8 @@ if [ "$NO_PACKAGES" -eq 0 ] && [ -f "$PKG_DIR/aur.txt" ]; then
     if [ "$COUNT" -gt 0 ] && command -v yay &>/dev/null; then
         log "  $COUNT AUR packages to install"
         if [ "$DRY_RUN" -eq 0 ]; then
-            echo "$AUR_PKGS" | yay -S --needed --noconfirm -
+            echo "$AUR_PKGS" > /tmp/aur-pkgs.txt
+            xargs -d '\n' yay -S --needed --noconfirm < /tmp/aur-pkgs.txt
         else
             log "DRY-RUN: Would install $COUNT AUR packages"
         fi

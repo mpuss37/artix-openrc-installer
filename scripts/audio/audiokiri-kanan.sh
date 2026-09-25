@@ -1,19 +1,30 @@
 #!/bin/bash
 
-# Nama sink TWS / Bluetooth
-BT_SINK="bluez_sink.41_42_24_DF_AF_34.a2dp_sink"
-
-# Ambil default sink aktif
+# Ambil sink default
 SINK=$(pactl info | awk -F': ' '/Default Sink/ {print $2}')
 
-echo "Sink aktif: $SINK"
+# Jika ada TWS/Bluetooth yang connect tapi default sink masih speaker laptop,
+# pindahkan default sink ke TWS dulu (biar volume mengatur TWS).
+BT_SINK=$(pactl list short sinks | awk '$2 ~ /bluez_sink/ {print $2}' | head -n 1)
+if [ -n "$BT_SINK" ] && [[ "$SINK" != *bluez* ]]; then
+    SINK="$BT_SINK"
+    pactl set-default-sink "$SINK"
+    echo "→ TWS terdeteksi, default sink dipindah ke: $SINK"
+fi
 
-# Ambil volume kiri & kanan
+echo "Sink: $SINK"
+
+# Ambil volume kiri & kanan (handle stereo DAN mono)
 read LEFT_VOLUME RIGHT_VOLUME <<< $(
     pactl list sinks |
     awk -v sink="$SINK" '
         $0 ~ "Name: "sink {found=1}
         found && /Volume:/ {
+            if ($2 == "mono:") {
+                gsub(/%/, "", $5)
+                print $5, $5
+                exit
+            }
             gsub(/%/, "", $5)
             gsub(/%/, "", $12)
             print $5, $12
@@ -22,9 +33,15 @@ read LEFT_VOLUME RIGHT_VOLUME <<< $(
     '
 )
 
-# Tambah volume
+echo "Volume sekarang → kiri: ${LEFT_VOLUME}% | kanan: ${RIGHT_VOLUME}%"
+
 STEP=6
-MAX=400
+# ponytail: laptop bisa 150%, Bluetooth mentok 100%
+if [[ "$SINK" == *bluez* ]]; then
+    MAX=100
+else
+    MAX=150
+fi
 
 NEW_LEFT=$((LEFT_VOLUME + STEP))
 NEW_RIGHT=$((RIGHT_VOLUME + STEP))
@@ -32,15 +49,15 @@ NEW_RIGHT=$((RIGHT_VOLUME + STEP))
 [ $NEW_LEFT -gt $MAX ] && NEW_LEFT=$MAX
 [ $NEW_RIGHT -gt $MAX ] && NEW_RIGHT=$MAX
 
-if [[ "$SINK" == bluez_sink.* ]]; then
-    echo "🎧 TWS / Bluetooth terdeteksi → stereo aktif"
-
+if [[ "$SINK" == *a2dp* ]]; then
+    echo "🎧 Stereo (A2DP)"
     pactl set-sink-volume "$SINK" ${NEW_LEFT}% ${NEW_RIGHT}%
-    echo "Volume → kiri: ${NEW_LEFT}% | kanan: ${NEW_RIGHT}%"
-
+elif [[ "$SINK" == *bluez* ]]; then
+    echo "🎧 Bluetooth mono (HFP)"
+    pactl set-sink-volume "$SINK" ${NEW_LEFT}%
 else
     echo "💻 Speaker laptop → mono kiri"
-
     pactl set-sink-volume "$SINK" ${NEW_LEFT}% 0%
-    echo "Volume → kiri: ${NEW_LEFT}% | kanan: 0%"
 fi
+
+echo "Volume → kiri: ${NEW_LEFT}% | kanan: ${NEW_RIGHT}%"

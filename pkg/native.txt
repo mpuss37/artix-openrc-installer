@@ -97,7 +97,7 @@ jq
 kitty
 lib32-gcc-libs
 lib32-glibc
-lib32-vulkan-intel
+
 liblsp-r3d-glx-lib
 libpam-google-authenticator
 libpwquality
