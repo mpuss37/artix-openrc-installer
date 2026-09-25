@@ -25,7 +25,9 @@ set $alt Mod1
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 #font pango:SourceCodePro Bold 9
-font pango:JetBrains Mono ExtraBold, Noto Color Emoji 10
+#font pango:JetBrains Mono Medium, Noto Sans CJK JP, Noto Color Emoji 10
+font pango:JetBrains Mono ExtraBold, Noto Sans CJK JP 10
+
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -36,7 +38,7 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -B 10 -i /home/mpuss/doc/pictures/walp/shinobi-un-1366x768.jpg -F
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -54,7 +56,9 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id /home/mpuss/doc/kodingan/skrip
 bindsym XF86AudioLowerVolume exec --no-startup-id /home/mpuss/doc/kodingan/skrip/audioturun.sh && $refresh_i3status
 
 bindsym Ctrl+shift+k exec --no-startup-id /home/mpuss/doc/kodingan/skrip/kecerahan-up.sh
+bindsym XF86MonBrightnessUp exec --no-startup-id /home/mpuss/doc/kodingan/skrip/kecerahan-up.sh
 bindsym Ctrl+shift+j exec --no-startup-id /home/mpuss/doc/kodingan/skrip/kecerahan-down.sh
+bindsym XF86MonBrightnessDown exec --no-startup-id /home/mpuss/doc/kodingan/skrip/kecerahan-down.sh
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -74,8 +78,7 @@ bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
-bindsym $mod+d exec --no-startup-id dmenu_run -nb '#1e1e1e' -sf '#ffffff' -sb '#8c0007' -nf '#ffffff' 
-#bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+d exec --no-startup-id dmenu_run -fn 'JetBrains Mono ExtraBold:size=10' -nb '#1e1e1e' -sf '#ffffff' -sb '#8c0007' -nf '#ffffff'
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -247,7 +250,8 @@ bar {
     urgent_workspace   #E00000 #000000 #FFFFFF
     binding_mode       #E00000 #000000 #FFFFFF
   }
-	font pango:JetBrains Mono ExtraBold 9
+#font pango:JetBrains Mono Bold, Noto Sans CJK JP, Noto Color Emoji 9
+	font pango:JetBrains Mono ExtraBold, Noto Sans CJK JP 9
         status_command i3status
 }
 
@@ -275,6 +279,9 @@ exec_always --no-startup-id clipmenud
 exec_always --no-startup-id feh --bg-fill /home/mpuss/doc/pictures/walp/shinobi-un-1366x768.jpg
 #exec_always --no-startup-id feh --bg-fill /home/mpuss/doc/pictures/walp/sasuke-uchiha-portrait-bi-1366x768.jpg
 #walpapper
+
+#notifikasi baterai lemah (<=20%) via udev - init env session
+exec_always --no-startup-id /home/mpuss/.local/bin/battery-notify-init.sh
 #exec_always --no-startup-id feh --bg-fill /home/mpuss/doc/pictures/walp/goku-dragon-ball-super-ultra-instinct-b3-1366x768.jpg
 
 #shorcut-custom

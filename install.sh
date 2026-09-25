@@ -133,7 +133,7 @@ fi
 # 5. STOW DOTFILES
 # =========================================================
 log "=== Installing dotfiles via stow ==="
-STOW_PACKAGES="bashrc i3 kitty picom i3status neofetch ranger htop btop cava gtk mimeapps opencode"
+STOW_PACKAGES="bashrc i3 kitty picom i3status neofetch ranger htop btop cava mimeapps"
 for pkg in $STOW_PACKAGES; do
     if [ -d "$DOTFILES/$pkg" ]; then
         log "  stow $pkg"

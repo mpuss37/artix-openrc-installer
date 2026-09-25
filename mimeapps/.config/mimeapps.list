@@ -2,7 +2,7 @@
 application/wps-office.docx=onlyoffice-desktopeditors.desktop;wps-office-wps.desktop;libreoffice-writer.desktop;
 image/png=feh.desktop;firefox.desktop;
 image/jpeg=feh.desktop;gimp.desktop;firefox.desktop;
-application/vnd.openxmlformats-officedocument.wordprocessingml.document=onlyoffice-desktopeditors.desktop;libreoffice-writer.desktop;wps-office-wps.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop;onlyoffice-desktopeditors.desktop;wps-office-wps.desktop;
 application/vnd.openxmlformats-officedocument.presentationml.presentation=onlyoffice-desktopeditors.desktop;wps-office-wpp.desktop;libreoffice-impress.desktop;
 application/wps-office.potx=wps-office-wpp.desktop;
 application/wps-office.dpss=wps-office-wpp.desktop;
@@ -15,8 +15,11 @@ application/wps-office.dotx=wps-office-wps.desktop;
 application/wps-office.wpss=wps-office-wps.desktop;
 application/wps-office.wpso=wps-office-wps.desktop;
 application/msword=onlyoffice-desktopeditors.desktop;
-text/plain=onlyoffice-desktopeditors.desktop;
+text/plain=libreoffice-writer.desktop;onlyoffice-desktopeditors.desktop;
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=onlyoffice-desktopeditors.desktop;wps-office-et.desktop;libreoffice-calc.desktop;
+application/x-subrip=vim.desktop;
+application/vnd.microsoft.portable-executable=com.usebottles.bottles.desktop;
+application/pdf=firefox.desktop;libreoffice-draw.desktop;
 
 [Default Applications]
 application/wps-office.pptx=wps-office-wpp.desktop
